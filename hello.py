@@ -1,3 +1,3 @@
-name = "Tim"
-print("Hall0 " + name)
+name = "Tim, "
+print("Hallo " + name "Willkommen in Modul 1" )
 
