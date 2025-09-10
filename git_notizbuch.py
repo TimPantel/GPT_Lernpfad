@@ -1,5 +1,22 @@
 import os               # Modul für Betriebssystemfunktionen (Dateien, Ordner etc.)
 import subprocess       # Modul, um Shell-Befehle über Python auszuführen
+import boto3
+
+# S3 Client erstellen
+s3 = boto3.client('s3')
+bucket_name = "devops-notizbuch"  # Name deines S3-Buckets
+
+
+#-------------------------------
+# Funktion Upload zu s3
+#-------------------------------
+def upload_s3(datei):
+    try:
+        s3.upload_file(datei, bucket_name, datei)   # Datei hochladen
+        print(f"☁️ Datei '{datei}' erfolgreich zu S3 hochgeladen!")
+    except Exception as e:
+        print("❌ Fehler beim Upload:", e)
+
 
 # -------------------------------
 # Funktion: Neue Notiz anlegen
@@ -18,6 +35,7 @@ def neue_notiz():
     subprocess.run(["git", "commit", "-m", f"Notiz '{titel}' hinzugefügt"])  # Commit erstellen
     subprocess.run(["git", "push"])            # Commit zu GitHub pushen
     print("📦 Notiz zu GitHub gepusht!")
+    upload_s3(titel) 			#DAtei wird zu s3 hochgeladen
 
 # -------------------------------
 # Funktion: Alle Notizen anzeigen
